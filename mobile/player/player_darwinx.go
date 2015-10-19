@@ -28,5 +28,3 @@ func (p *Player) Play() {
 func (p *Player) Pause() {
 	pause(p.p)
 }
-
-func (p *Player) Close() {}

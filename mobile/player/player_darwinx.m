@@ -1,8 +1,8 @@
 // +build darwin
 // +build arm arm64
 
-AVPlayer* newPlayer(NSString* url) {
-  return [AVPlayer playerWithURL:url];
+AVPlayer* newPlayer(char* url) {
+  return [AVPlayer playerWithURL:[NSString stringWithCString:url encoding:NSASCIIStringEncoding]];
 }
 
 void play(AVPlayer* p) {
