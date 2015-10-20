@@ -6,6 +6,10 @@ AVPlayer* newPlayer(char* url) {
   return [AVPlayer playerWithURL: u];
 }
 
-void play(AVPlayer* p) {
+void playPlayer(AVPlayer* p) {
   [p play];
+}
+
+void pausePlayer(AVPlayer* p) {
+  [p pause];
 }

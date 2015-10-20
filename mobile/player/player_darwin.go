@@ -10,7 +10,8 @@ package player
 #import <CoreFoundation/CoreFoundation.h>
 
 AVPlayer* newPlayer(char* url);
-void play(AVPlayer*);
+void playPlayer(AVPlayer*);
+void pausePlayer(AVPlayer*);
 
 */
 import "C"
@@ -30,5 +31,9 @@ func NewPlayer(url string) *Player {
 }
 
 func (p *Player) Play() {
-	C.play(p.p)
+	C.playPlayer(p.p)
+}
+
+func (p *Player) Pause() {
+	C.pausePlayer(p.p)
 }
