@@ -1,5 +1,11 @@
 package audio
 
+// TODO(jbd): How to cascade decoders?
+
+type Decoder interface {
+	Decode([]byte) ([]Frame, error)
+}
+
 type Frame struct{}
 
 type Device struct{}
