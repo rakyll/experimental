@@ -1,5 +1,7 @@
 package audio
 
+type Frame struct{}
+
 type Device struct{}
 
 func OpenDevice(name string) (*Device, error) {
@@ -18,7 +20,7 @@ type Channel struct {
 	d *Device
 }
 
-func (c *Channel) Write(b []byte) (int, error) {
+func (c *Channel) Write(data []Frame) (int, error) {
 	panic("not yet implemented")
 }
 
