@@ -24,13 +24,33 @@ import (
 	"golang.org/x/mobile/exp/audio/al"
 )
 
+func NewBufferStream(buf []byte) Stream {
+	panic("not implemented")
+}
+
 func NewRemoteStream(url string) Stream {
 	panic("not implemented")
 }
 
 type Stream interface {
-	ReadFrame(n int) ([]byte, int, error)
-	Frame() (channels int, bitDepth int64, samplesPerSecond int64)
+	// ReadFrame reads num frames from the stream and fills the buf.
+	// It can return before n frames are read. In this case, n will
+	// be less than num.
+	ReadFrame(num int) (buf []byte, n int, err error)
+
+	// Frame returns the number of channel, bit depth and samples per second.
+	// It will block until it tries to extract this information from the
+	// underlying stream.
+	// It will return an error if frame properties cannot be extracted
+	// from the stream.
+	Frame() (channels int, bitDepth int64, samplesPerSecond int64, err error)
+}
+
+type SeekStream interface {
+	Stream
+
+	// Seek seems n frames on the stream.
+	Seek(n int) error
 }
 
 type Decoder struct{}
