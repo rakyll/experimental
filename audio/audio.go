@@ -29,13 +29,13 @@ func NewRemoteStream(url string) Stream {
 }
 
 type Stream interface {
-	Read(n int) ([]byte, int, error)
+	ReadFrame(n int) ([]byte, int, error)
 	Frame() (channels int, bitDepth int64, samplesPerSecond int64)
 }
 
 type Decoder struct{}
 
-func (*Decoder) Stream() Stream {
+func (*Decoder) Output() Stream {
 	panic("not implemented")
 }
 
@@ -50,10 +50,15 @@ func NewDecoder(src Stream) *Decoder {
 func a() {
 	var s Stream
 	d := NewMP3Decoder(s)
-	d2 := NewDecoder(d.Stream())
-	d3 := NewDecoder(d2.Stream())
-	d3.Stream()
+	d2 := NewDecoder(d.Output())
+	d3 := NewDecoder(d2.Output())
+
 	// decoding starts when you start to read from d3 decoded stream.
+	p, err := NewPlayer(d3.Output())
+	if err != nil {
+		panic(err)
+	}
+	p.Play()
 }
 
 // State indicates the current playing state of the player.
