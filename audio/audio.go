@@ -19,11 +19,6 @@
 package audio
 
 import (
-	"bytes"
-	"errors"
-	"fmt"
-	"io"
-	"sync"
 	"time"
 
 	"golang.org/x/mobile/exp/audio/al"
@@ -40,7 +35,9 @@ type Stream interface {
 
 type Decoder struct{}
 
-func (*Decoder) Stream() Stream {}
+func (*Decoder) Stream() Stream {
+	panic("not implemented")
+}
 
 func NewMP3Decoder(src Stream) *Decoder {
 	panic("not yet")
@@ -53,9 +50,9 @@ func NewDecoder(src Stream) *Decoder {
 func a() {
 	var s Stream
 	d := NewMP3Decoder(s)
-	d2 := NewDecoder(d.Decoded())
-	d3 := NewDecoder(d2.Decoded())
-	d3.Decoded()
+	d2 := NewDecoder(d.Stream())
+	d3 := NewDecoder(d2.Stream())
+	d3.Stream()
 	// decoding starts when you start to read from d3 decoded stream.
 }
 
