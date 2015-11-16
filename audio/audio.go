@@ -20,8 +20,6 @@ package audio
 
 import (
 	"time"
-
-	"golang.org/x/mobile/exp/audio/al"
 )
 
 func NewBufferStream(buf []byte) Stream {
@@ -33,10 +31,10 @@ func NewRemoteStream(url string) Stream {
 }
 
 type Stream interface {
-	// ReadFrame reads num frames from the stream and fills the buf.
+	// Read reads num frames from the stream and fills the buf.
 	// It can return before n frames are read. In this case, n will
 	// be less than num.
-	ReadFrame(num int) (buf []byte, n int, err error)
+	Read(num int) (buf []byte, n int, err error)
 
 	// Frame returns the number of channel, bit depth and samples per second.
 	// It will block until it tries to extract this information from the
@@ -91,24 +89,6 @@ const (
 	Paused
 	Stopped
 )
-
-func (s State) String() string { return stateStrings[s] }
-
-var stateStrings = [...]string{
-	Unknown: "unknown",
-	Initial: "initial",
-	Playing: "playing",
-	Paused:  "paused",
-	Stopped: "stopped",
-}
-
-var codeToState = map[int32]State{
-	0:          Unknown,
-	al.Initial: Initial,
-	al.Playing: Playing,
-	al.Paused:  Paused,
-	al.Stopped: Stopped,
-}
 
 type Player struct{}
 
