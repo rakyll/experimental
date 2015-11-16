@@ -34,20 +34,16 @@ func (s *decodedStream) Read(buf []byte, offset int64) (n int, err error) {
 		// TODO(jbd): Seek back if r.in is a ReadSeeker.
 		return 0, errors.New("cannot seek back")
 	}
-
-	i := s.Info()
-	length := i.Channels * i.BufferDepth * max
-
-	// if buffer contains at least length number of frames, return them.
-	if (offset-current)+length <= len(s.buf) {
-		return s.buf[offset-current : (offset-current)+length]
-	}
+	// if buffer contains at least len(buf) bytes, return them.
 
 	// if buffer is not filled with enough data, read more from
-	// s.in. If EOF from s.io, return EOF.
+	// s.in.
+
+	// if s.in is EOFed, return EOF.
 	panic("not yet implemented")
 }
 
 func (s *decodedStream) Info() (FrameInfo, error) {
+	// TODO(jbd): Determined from the header from s.in.
 	return FrameInfo{2, 16, 44000}, nil
 }
