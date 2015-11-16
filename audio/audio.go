@@ -30,10 +30,6 @@ func NewRemoteStream(url string) (Stream, error) {
 	panic("not implemented")
 }
 
-func Decode(in Stream) (out Stream, err error) {
-	panic("not implemented")
-}
-
 type FrameInfo struct {
 	Channels   int
 	BitDepth   int64
