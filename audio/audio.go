@@ -26,57 +26,23 @@ func NewBufferStream(buf []byte) Stream {
 	panic("not implemented")
 }
 
-func NewRemoteStream(url string) Stream {
+func NewRemoteStream(url string) (Stream, error) {
 	panic("not implemented")
+}
+
+func Decode(in Stream) (out Stream, err error) {
+	panic("not implemented")
+}
+
+type FrameInfo struct {
+	Channels   int
+	BitDepth   int64
+	SampleRate int64
 }
 
 type Stream interface {
-	// Read reads num frames from the stream and fills the buf.
-	// It can return before n frames are read. In this case, n will
-	// be less than num.
-	Read(num int) (buf []byte, n int, err error)
-
-	// Frame returns the number of channel, bit depth and samples per second.
-	// It will block until it tries to extract this information from the
-	// underlying stream.
-	// It will return an error if frame properties cannot be extracted
-	// from the stream.
-	Frame() (channels int, bitDepth int64, samplesPerSecond int64, err error)
-}
-
-type SeekStream interface {
-	Stream
-
-	// Seek seems n frames on the stream.
-	Seek(n int) error
-}
-
-type Decoder struct{}
-
-func (*Decoder) Output() Stream {
-	panic("not implemented")
-}
-
-func NewMP3Decoder(src Stream) *Decoder {
-	panic("not yet")
-}
-
-func NewDecoder(src Stream) *Decoder {
-	panic("not yet")
-}
-
-func a() {
-	var s Stream
-	d := NewMP3Decoder(s)
-	d2 := NewDecoder(d.Output())
-	d3 := NewDecoder(d2.Output())
-
-	// decoding starts when you start to read from d3 decoded stream.
-	p, err := NewPlayer(d3.Output())
-	if err != nil {
-		panic(err)
-	}
-	p.Play()
+	Read(offset int64, max int64) (buf []byte, n int, err error)
+	Info() (FrameInfo, error)
 }
 
 // State indicates the current playing state of the player.
