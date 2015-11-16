@@ -41,7 +41,7 @@ type FrameInfo struct {
 }
 
 type Stream interface {
-	Read(offset int64, max int64) (buf []byte, n int, err error)
+	Read(buf []byte, offset int64) (n int64, err error)
 	Info() (FrameInfo, error)
 }
 

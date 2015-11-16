@@ -29,7 +29,22 @@ type decodedStream struct {
 	buf     []byte // TODO(jbd): Buffer is a small buffer to be used for prefetching and caching.
 }
 
-func (s *decodedStream) Read(offset int64, max int64) (buf []byte, n int, err error) {
+func (s *decodedStream) Read(buf []byte, offset int64) (n int, err error) {
+	if offset < s.current {
+		// TODO(jbd): Seek back if r.in is a ReadSeeker.
+		return 0, errors.New("cannot seek back")
+	}
+
+	i := s.Info()
+	length := i.Channels * i.BufferDepth * max
+
+	// if buffer contains at least length number of frames, return them.
+	if (offset-current)+length <= len(s.buf) {
+		return s.buf[offset-current : (offset-current)+length]
+	}
+
+	// if buffer is not filled with enough data, read more from
+	// s.in. If EOF from s.io, return EOF.
 	panic("not yet implemented")
 }
 
