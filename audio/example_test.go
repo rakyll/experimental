@@ -43,7 +43,7 @@ func (s *decodedStream) Read(buf []byte, offset int64) (n int, err error) {
 	panic("not yet implemented")
 }
 
-func (s *decodedStream) Info() (FrameInfo, error) {
+func (s *decodedStream) Info() (StreamInfo, error) {
 	// TODO(jbd): Determined from the header from s.in.
-	return FrameInfo{2, 16, 44000}, nil
+	return StreamInfo{2, 16, 44000}, nil
 }

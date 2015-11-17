@@ -30,7 +30,7 @@ func NewRemoteStream(url string) (Stream, error) {
 	panic("not implemented")
 }
 
-type FrameInfo struct {
+type StreamInfo struct {
 	Channels   int
 	BitDepth   int64
 	SampleRate int64
@@ -38,7 +38,7 @@ type FrameInfo struct {
 
 type Stream interface {
 	Read(buf []byte, offset int64) (n int64, err error)
-	Info() (FrameInfo, error)
+	Info() (StreamInfo, error)
 }
 
 // State indicates the current playing state of the player.
