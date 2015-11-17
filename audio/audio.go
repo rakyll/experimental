@@ -44,14 +44,6 @@ type Stream interface {
 // State indicates the current playing state of the player.
 type State int
 
-const (
-	Unknown State = iota
-	Initial
-	Playing
-	Paused
-	Stopped
-)
-
 type Player struct{}
 
 func NewPlayer(src ...Stream) (*Player, error) {
