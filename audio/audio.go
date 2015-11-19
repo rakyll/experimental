@@ -24,6 +24,7 @@ import (
 )
 
 func NewBufferClip(buf []byte) Clip {
+func NewBufferClip(buf []byte, info ClipInfo) Clip {
 	panic("not implemented")
 }
 
