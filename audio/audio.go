@@ -23,6 +23,11 @@ import (
 	"time"
 )
 
+// Decoder decodes the source into a Clip.
+func Decode(src io.ReadSeeker) (Clip, error) {
+	panic("not implemented")
+}
+
 // NewBufferClip converts a buffer to a Clip.
 func NewBufferClip(buf []byte, info ClipInfo) Clip {
 	panic("not implemented")

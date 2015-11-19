@@ -1,25 +1,25 @@
 package audio_test
 
-import "github.com/rakyll/experimental/audio"
+import (
+	"io"
+
+	"github.com/rakyll/experimental/audio"
+)
+
+func DecodeClip(r io.ReadSeeker) audio.Clip {
+	return &decodedClip{in: r}
+}
 
 func Example() {
-	var r io.Reader
-	s, err := Decode(r)
-	if err != nil {
-		panic(err)
-	}
+	var rs io.ReadSeeker
+	clip := DecodeClip(rs)
 
-	// decoding begins when d3.Ouput needs to be consumed.
-	p, err := audio.NewPlayer(s)
+	p, err := audio.NewPlayer(clip)
 	if err != nil {
 		panic(err)
 	}
 	p.Play()
 
-}
-
-func Decode(r io.Reader) Clip {
-	return decodedClip{in: r}
 }
 
 type decodedClip struct {
@@ -29,11 +29,11 @@ type decodedClip struct {
 	buf     []byte // TODO(jbd): Buffer is a small buffer to be used for prefetching and caching.
 }
 
-func (s *decodedClip) Read(buf []byte, offset int64) (n int, err error) {
-	if offset < s.current {
-		// TODO(jbd): Seek back if r.in is a ReadSeeker.
-		return 0, errors.New("cannot seek back")
-	}
+func (s *decodedClip) Seek(offset int64, whence int) (int64, error) {
+	panic("not implemented")
+}
+
+func (s *decodedClip) Read(buf []byte) (n int, err error) {
 	// if buffer contains at least len(buf) bytes, return them.
 
 	// if buffer is not filled with enough data, read more from
@@ -43,7 +43,7 @@ func (s *decodedClip) Read(buf []byte, offset int64) (n int, err error) {
 	panic("not yet implemented")
 }
 
-func (s *decodedClip) Info() (ClipInfo, error) {
+func (s *decodedClip) Info() audio.ClipInfo {
 	// TODO(jbd): Determined from the header from s.in.
-	return ClipInfo{2, 16, 44000}, nil
+	return audio.ClipInfo{2, 16, 44000}
 }
