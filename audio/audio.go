@@ -54,8 +54,7 @@ type ClipInfo struct {
 // Clip represents a linear PCM formatted audio io.ReadSeeker.
 // Clip can seek and read from a section and allow users to
 // consume a small section of the underlying audio data.
-// Info returns the basic frame-level information about the audio
-// that backs the clip.
+// Info returns the basic frame-level information about the clip audio.
 type Clip interface {
 	io.ReadSeeker
 	Info() ClipInfo
@@ -66,6 +65,8 @@ type State int
 
 type Player struct{}
 
+// NewPlayer returns a new Player.
+// (*Player).Play plays the provided clips in the given order.
 func NewPlayer(c ...Clip) (*Player, error) {
 	panic("not yet implemented")
 }
