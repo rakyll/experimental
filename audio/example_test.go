@@ -23,7 +23,7 @@ func Example() {
 }
 
 type decodedClip struct {
-	in io.Reader
+	in io.ReadSeeker
 
 	current int64  // current is the current frame offset. It is the number of all consumed frames.
 	buf     []byte // TODO(jbd): Buffer is a small buffer to be used for prefetching and caching.
