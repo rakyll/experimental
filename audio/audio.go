@@ -35,15 +35,22 @@ func NewRemoteClip(url string) (Clip, error) {
 }
 
 // ClipInfo represents the frame-level information.
-// Channels represent the number of audio channels (e.g. 1 for mono, 2 for stereo).
-// Bit depth is the number of bits used to represent a single sample.
-// Sample rate is the number of samples to be played each second.
 type ClipInfo struct {
-	Channels   int
-	BitDepth   int64
+	// Channels represent the number of audio channels (e.g. 1 for mono, 2 for stereo).
+	Channels int
+
+	// Bit depth is the number of bits used to represent a single sample.
+	BitDepth int
+
+	// Sample rate is the number of samples to be played each second.
 	SampleRate int64
 }
 
+// Clip represents a linear PCM formatted audio io.ReadSeeker.
+// Clip can seek and read from a section and allow users to
+// consume a small section of the underlying audio data.
+// Info returns the basic frame-level information about the audio
+// that backs the clip.
 type Clip interface {
 	io.ReadSeeker
 	Info() ClipInfo
