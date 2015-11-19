@@ -28,9 +28,9 @@ func NewBufferClip(buf []byte, info ClipInfo) Clip {
 	panic("not implemented")
 }
 
-// NewRemoteStream convert the HTTP live streaming media source
-// into a Clip.
-func NewRemoteStream(url string) (Clip, error) {
+// NewRemoteClip convert the HTTP live streaming media
+// source into a Clip.
+func NewRemoteClip(url string) (Clip, error) {
 	panic("not implemented")
 }
 
