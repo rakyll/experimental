@@ -23,7 +23,7 @@ import (
 	"time"
 )
 
-func NewBufferClip(buf []byte) Clip {
+// NewBufferClip converts a buffer to a Clip.
 func NewBufferClip(buf []byte, info ClipInfo) Clip {
 	panic("not implemented")
 }
