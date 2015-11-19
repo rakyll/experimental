@@ -34,6 +34,10 @@ func NewRemoteStream(url string) (Clip, error) {
 	panic("not implemented")
 }
 
+// ClipInfo represents the frame-level information. Channels is the
+// number of audio channels (e.g. 1 for mono, 2 for stereo). Bit depth
+// is the number of bits used to represent a single sample.
+// Sample rate is the number of samples to be played each second.
 type ClipInfo struct {
 	Channels   int
 	BitDepth   int64
