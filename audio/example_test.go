@@ -18,18 +18,18 @@ func Example() {
 
 }
 
-func Decode(r io.Reader) Stream {
-	return decodedStream{in: r}
+func Decode(r io.Reader) Clip {
+	return decodedClip{in: r}
 }
 
-type decodedStream struct {
+type decodedClip struct {
 	in io.Reader
 
 	current int64  // current is the current frame offset. It is the number of all consumed frames.
 	buf     []byte // TODO(jbd): Buffer is a small buffer to be used for prefetching and caching.
 }
 
-func (s *decodedStream) Read(buf []byte, offset int64) (n int, err error) {
+func (s *decodedClip) Read(buf []byte, offset int64) (n int, err error) {
 	if offset < s.current {
 		// TODO(jbd): Seek back if r.in is a ReadSeeker.
 		return 0, errors.New("cannot seek back")
@@ -43,7 +43,7 @@ func (s *decodedStream) Read(buf []byte, offset int64) (n int, err error) {
 	panic("not yet implemented")
 }
 
-func (s *decodedStream) Info() (StreamInfo, error) {
+func (s *decodedClip) Info() (ClipInfo, error) {
 	// TODO(jbd): Determined from the header from s.in.
-	return StreamInfo{2, 16, 44000}, nil
+	return ClipInfo{2, 16, 44000}, nil
 }

@@ -19,26 +19,27 @@
 package audio
 
 import (
+	"io"
 	"time"
 )
 
-func NewBufferStream(buf []byte) Stream {
+func NewBufferClip(buf []byte) Clip {
 	panic("not implemented")
 }
 
-func NewRemoteStream(url string) (Stream, error) {
+func NewRemoteStream(url string) (Clip, error) {
 	panic("not implemented")
 }
 
-type StreamInfo struct {
+type ClipInfo struct {
 	Channels   int
 	BitDepth   int64
 	SampleRate int64
 }
 
-type Stream interface {
-	Read(buf []byte, offset int64) (n int64, err error)
-	Info() (StreamInfo, error)
+type Clip interface {
+	io.ReadSeeker
+	Info() ClipInfo
 }
 
 // State indicates the current playing state of the player.
@@ -46,7 +47,7 @@ type State int
 
 type Player struct{}
 
-func NewPlayer(src ...Stream) (*Player, error) {
+func NewPlayer(c ...Clip) (*Player, error) {
 	panic("not yet implemented")
 }
 
