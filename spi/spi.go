@@ -20,6 +20,14 @@ func (d *Device) Close() error {
 	panic("not implemented")
 }
 
-func Open(device string, mode int, speed int, delay int) *Device {
+func (d *Device) SetSpeed(speedHz int) error {
+	panic("not implemented")
+}
+
+func (d *Device) SetDelay(delay int) error {
+	panic("not implemented")
+}
+
+func Open(device string, mode int, speedHz int, delay int) *Device {
 	panic("not implemented")
 }
