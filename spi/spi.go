@@ -20,6 +20,6 @@ func (d *Device) Close() error {
 	panic("not implemented")
 }
 
-func Open(device string, mod int, clock int) *Device {
+func Open(device string, mode int, speed int, delay int) *Device {
 	panic("not implemented")
 }
