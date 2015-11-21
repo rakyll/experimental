@@ -12,7 +12,7 @@ func (d *Device) Write(buf []byte) error {
 	panic("not implemented")
 }
 
-func (d *Device) SetSlave(id int) {
+func (d *Device) SetActive(id int) {
 	panic("not implemented")
 }
 
