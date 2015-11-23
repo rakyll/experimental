@@ -43,7 +43,7 @@ func (s *decodedClip) Read(buf []byte) (n int, err error) {
 	panic("not yet implemented")
 }
 
-func (s *decodedClip) Info() audio.ClipInfo {
+func (s *decodedClip) FrameInfo() audio.FrameInfo {
 	// TODO(jbd): Determined from the header from s.in.
-	return audio.ClipInfo{2, 16, 44000}
+	return audio.FrameInfo{2, 16, 44000}
 }

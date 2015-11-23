@@ -29,7 +29,7 @@ func Decode(src io.ReadSeeker) (Clip, error) {
 }
 
 // NewBufferClip converts a buffer to a Clip.
-func NewBufferClip(buf []byte, info ClipInfo) Clip {
+func NewBufferClip(buf []byte, info FrameInfo) Clip {
 	panic("not implemented")
 }
 
@@ -39,8 +39,8 @@ func NewRemoteClip(url string) (Clip, error) {
 	panic("not implemented")
 }
 
-// ClipInfo represents the frame-level information.
-type ClipInfo struct {
+// FrameInfo represents the frame-level information.
+type FrameInfo struct {
 	// Channels represent the number of audio channels (e.g. 1 for mono, 2 for stereo).
 	Channels int
 
@@ -54,10 +54,12 @@ type ClipInfo struct {
 // Clip represents a linear PCM formatted audio io.ReadSeeker.
 // Clip can seek and read from a section and allow users to
 // consume a small section of the underlying audio data.
-// Info returns the basic frame-level information about the clip audio.
+// FrameInfo returns the basic frame-level information about the clip audio.
+// Size returns the total number of bytes from the underlying audio
+// data. If size is not known, -1 is returned.
 type Clip interface {
 	io.ReadSeeker
-	Info() ClipInfo
+	FrameInfo() FrameInfo
 }
 
 // State indicates the current playing state of the player.
