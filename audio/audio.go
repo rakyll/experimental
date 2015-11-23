@@ -60,6 +60,7 @@ type FrameInfo struct {
 type Clip interface {
 	io.ReadSeeker
 	FrameInfo() FrameInfo
+	Size() int64
 }
 
 // State indicates the current playing state of the player.

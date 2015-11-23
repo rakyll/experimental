@@ -47,3 +47,7 @@ func (s *decodedClip) FrameInfo() audio.FrameInfo {
 	// TODO(jbd): Determined from the header from s.in.
 	return audio.FrameInfo{2, 16, 44000}
 }
+
+func (s *decodedClip) Size() int64 {
+	return 46000
+}
