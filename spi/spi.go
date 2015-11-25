@@ -114,6 +114,5 @@ func Open(device string, mode int, speed int, bitsPerWord int) (*Device, error) 
 		d.Close()
 		return nil, err
 	}
-	// TODO(jbd): close if error
 	return d, nil
 }
