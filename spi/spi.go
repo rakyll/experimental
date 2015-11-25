@@ -37,8 +37,13 @@ func wrIOC() uintptr {
 	return ioc(IOC_READ|IOC_WRITE, IOC_MAGIC, 1, 1)
 }
 
+func speedHzIOC() uintptr {
+	panic("not implemented")
+}
+
 type Device struct {
 	f           *os.File
+	mode        int
 	delay       int
 	speedHz     int
 	bitsPerWord int
@@ -53,6 +58,26 @@ type payload struct {
 	bitsPerWord uint8
 }
 
+func (d *Device) SetMode(mode int) error {
+	if err := d.ioctl(wrIOC(), uintptr(unsafe.Pointer(&mode))); err != nil {
+		return err
+	}
+	d.mode = mode
+	return nil
+}
+
+func (d *Device) SetSpeed(speedHz int) error {
+	if err := d.ioctl(speedHzIOC(), uintptr(unsafe.Pointer(&speedHz))); err != nil {
+		return err
+	}
+	d.speedHz = speedHz
+	return nil
+}
+
+func (d *Device) SetBitsPerWord(bits int) error {
+	panic("not implemented")
+}
+
 func (d *Device) Write(data []byte) error {
 	panic("not implemented")
 }
@@ -63,23 +88,32 @@ func (d *Device) Close() error {
 
 func (d *Device) ioctl(a1, a2 uintptr) error {
 	_, _, errno := syscall.Syscall(
-		syscall.SYS_IOCTL, d.Fd(), a1, a2,
+		syscall.SYS_IOCTL, d.f.Fd(), a1, a2,
 	)
 	if errno != 0 {
-		return nil, syscall.Errno(errno)
+		return syscall.Errno(errno)
 	}
 	return nil
 }
 
-func Open(device string, mode int, speed int, delay int, bitsPerWord int) (*Device, error) {
+func Open(device string, mode int, speed int, bitsPerWord int) (*Device, error) {
 	f, err := os.Open(device)
 	if err != nil {
 		return nil, err
 	}
 	d := &Device{f: f}
-	if err := d.ioctl(wrIOC(), uintptr(unsafe.Pointer(&mode))); err != nil {
+	if err := d.SetMode(mode); err != nil {
+		d.Close()
 		return nil, err
 	}
-	// TODO(jbd): set speed and delay and bits per word
+	if err := d.SetSpeed(speed); err != nil {
+		d.Close()
+		return nil, err
+	}
+	if err := d.SetBitsPerWord(bitsPerWord); err != nil {
+		d.Close()
+		return nil, err
+	}
+	// TODO(jbd): close if error
 	return d, nil
 }
