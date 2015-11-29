@@ -38,7 +38,16 @@ func wrIOC() uintptr {
 }
 
 func speedHzIOC() uintptr {
-	panic("not implemented")
+	return ioc(IOC_READ|IOC_WRITE, IOC_MAGIC, 3, 1)
+}
+
+func bitsPerWordIOC() uintptr {
+	return ioc(IOC_READ|IOC_WRITE, IOC_MAGIC, 4, 4)
+}
+
+func msgIOC() uintptr {
+	size := unsafe.Sizeof(payload{})
+	return ioc(IOC_READ|IOC_WRITE, IOC_MAGIC, 0, size)
 }
 
 type Device struct {
@@ -75,11 +84,27 @@ func (d *Device) SetSpeed(speedHz int) error {
 }
 
 func (d *Device) SetBitsPerWord(bits int) error {
-	panic("not implemented")
+	if err := d.ioctl(bitsPerWordIOC(), uintptr(unsafe.Pointer(&bits))); err != nil {
+		return err
+	}
+	d.bitsPerWord = bits
+	return nil
 }
 
-func (d *Device) Write(data []byte) error {
-	panic("not implemented")
+func (d *Device) Do(tx, rx []byte) error {
+	p := payload{
+		tx:          uint64(uintptr(unsafe.Pointer(&tx))),
+		rx:          uint64(uintptr(unsafe.Pointer(&rx))),
+		length:      uint32(len(tx)),
+		speedHz:     uint32(d.speedHz),
+		delay:       uint16(d.delay),
+		bitsPerWord: uint8(d.bitsPerWord),
+	}
+	if err := d.ioctl(msgIOC(), uintptr(unsafe.Pointer(&p))); err != nil {
+		return err
+	}
+	// TODO(jbd): Read into rx.
+	return nil
 }
 
 func (d *Device) Close() error {
