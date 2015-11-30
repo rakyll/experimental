@@ -76,7 +76,8 @@ func (d *Device) SetMode(mode int) error {
 }
 
 func (d *Device) SetSpeed(speedHz int) error {
-	if err := d.ioctl(speedHzIOC(), uintptr(unsafe.Pointer(&speedHz))); err != nil {
+	s := uint32(speedHz)
+	if err := d.ioctl(speedHzIOC(), uintptr(unsafe.Pointer(&s))); err != nil {
 		return err
 	}
 	d.speedHz = speedHz
