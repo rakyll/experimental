@@ -34,15 +34,15 @@ func ioc(dir, typ, nr, size uintptr) uintptr {
 }
 
 func wrIOC() uintptr {
-	return ioc(IOC_READ|IOC_WRITE, IOC_MAGIC, 1, 1)
+	return ioc(IOC_WRITE, IOC_MAGIC, 1, 1)
 }
 
 func speedHzIOC() uintptr {
-	return ioc(IOC_READ|IOC_WRITE, IOC_MAGIC, 3, 1)
+	return ioc(IOC_WRITE, IOC_MAGIC, 3, 1)
 }
 
 func bitsPerWordIOC() uintptr {
-	return ioc(IOC_READ|IOC_WRITE, IOC_MAGIC, 4, 4)
+	return ioc(IOC_WRITE, IOC_MAGIC, 4, 4)
 }
 
 func msgIOC() uintptr {
