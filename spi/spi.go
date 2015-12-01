@@ -122,23 +122,10 @@ func (d *Device) ioctl(a1, a2 uintptr) error {
 	return nil
 }
 
-func Open(device string, mode int, speed int, bitsPerWord int) (*Device, error) {
-	f, err := os.Open(device)
+func Open(device string) (*Device, error) {
+	f, err := os.OpenFile(device, os.O_RDWR, 0)
 	if err != nil {
 		return nil, err
 	}
-	d := &Device{f: f}
-	if err := d.SetMode(mode); err != nil {
-		d.Close()
-		return nil, err
-	}
-	if err := d.SetSpeed(speed); err != nil {
-		d.Close()
-		return nil, err
-	}
-	if err := d.SetBitsPerWord(bitsPerWord); err != nil {
-		d.Close()
-		return nil, err
-	}
-	return d, nil
+	return &Device{f: f}, nil
 }
