@@ -46,8 +46,8 @@ func bitsPerWordIOC() uintptr {
 }
 
 func msgIOC() uintptr {
-	size := unsafe.Sizeof(payload{})
-	return ioc(IOC_READ|IOC_WRITE, IOC_MAGIC, 0, size)
+	size := uintptr(unsafe.Sizeof(payload{}))
+	return ioc(IOC_WRITE, IOC_MAGIC, 0, size)
 }
 
 type Device struct {
