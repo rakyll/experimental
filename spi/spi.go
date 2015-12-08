@@ -52,9 +52,8 @@ func speedHzIOC() uintptr {
 	return ioc(IOC_WRITE, magic, 4, 4)
 }
 
-func msgIOC() uintptr {
-	size := uintptr(unsafe.Sizeof(payload{}))
-	return ioc(IOC_WRITE, IOC_MAGIC, 0, size)
+func msgIOC(n uint32) uintptr {
+	return uintptr(0x40006B00 + (n * 0x200000))
 }
 
 type Device struct {
