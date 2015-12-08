@@ -92,7 +92,8 @@ func (d *Device) SetSpeed(speedHz int) error {
 }
 
 func (d *Device) SetBitsPerWord(bits int) error {
-	if err := d.ioctl(bitsPerWordIOC(), uintptr(unsafe.Pointer(&bits))); err != nil {
+	b := uint8(bits)
+	if err := d.ioctl(bitsPerWordIOC(), uintptr(unsafe.Pointer(&b))); err != nil {
 		return err
 	}
 	d.bitsPerWord = bits
