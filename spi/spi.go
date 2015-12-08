@@ -13,6 +13,8 @@ const (
 	Mode3 = 0x0C
 )
 
+const (
+	magic = 107
 
 	IOC_NRBITS   = 8
 	IOC_TYPEBITS = 8
@@ -39,15 +41,15 @@ func ioc(dir, typ, nr, size uintptr) uintptr {
 }
 
 func wrIOC() uintptr {
-	return ioc(IOC_WRITE, IOC_MAGIC, 1, 1)
-}
-
-func speedHzIOC() uintptr {
-	return ioc(IOC_WRITE, IOC_MAGIC, 3, 1)
+	return ioc(IOC_WRITE, magic, 1, 1)
 }
 
 func bitsPerWordIOC() uintptr {
-	return ioc(IOC_WRITE, IOC_MAGIC, 4, 4)
+	return ioc(IOC_WRITE, magic, 3, 1)
+}
+
+func speedHzIOC() uintptr {
+	return ioc(IOC_WRITE, magic, 4, 4)
 }
 
 func msgIOC() uintptr {
