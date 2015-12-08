@@ -122,8 +122,8 @@ func (d *Device) ioctl(a1, a2 uintptr) error {
 	return nil
 }
 
-func Open(device string) (*Device, error) {
-	f, err := os.OpenFile(device, os.O_RDWR, 0)
+func Open(name string) (*Device, error) {
+	f, err := os.OpenFile(name, os.O_RDWR, 0)
 	if err != nil {
 		return nil, err
 	}
