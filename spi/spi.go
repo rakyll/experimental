@@ -3,6 +3,7 @@ package spi
 import (
 	"os"
 	"syscall"
+	"time"
 	"unsafe"
 )
 
@@ -54,7 +55,6 @@ func msgIOC(n uint32) uintptr {
 type Device struct {
 	f           *os.File
 	mode        int
-	delay       int
 	speedHz     int
 	bitsPerWord int
 }
@@ -95,13 +95,13 @@ func (d *Device) SetBitsPerWord(bits int) error {
 	return nil
 }
 
-func (d *Device) Do(buf []byte) error {
+func (d *Device) Do(buf []byte, delay time.Duration) error {
 	p := payload{
 		tx:          uint64(uintptr(unsafe.Pointer(&buf[0]))),
 		rx:          uint64(uintptr(unsafe.Pointer(&buf[0]))),
 		length:      uint32(len(buf)),
 		speedHz:     uint32(d.speedHz),
-		delay:       uint16(d.delay),
+		delay:       uint16(delay),
 		bitsPerWord: uint8(d.bitsPerWord),
 	}
 	// TODO(jbd): read from the buffer.
