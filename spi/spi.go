@@ -74,7 +74,8 @@ type payload struct {
 }
 
 func (d *Device) SetMode(mode int) error {
-	if err := d.ioctl(wrIOC(), uintptr(unsafe.Pointer(&mode))); err != nil {
+	m := uint8(mode)
+	if err := d.ioctl(wrIOC(), uintptr(unsafe.Pointer(&m))); err != nil {
 		return err
 	}
 	d.mode = mode
