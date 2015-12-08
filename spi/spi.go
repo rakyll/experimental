@@ -120,7 +120,6 @@ func (d *Device) Do(buf []byte, delay time.Duration) error {
 		delay:       uint16(delay),
 		bitsPerWord: d.bitsPerWord,
 	}
-	// TODO(jbd): read from the buffer.
 	return d.ioctl(msgArg(1), uintptr(unsafe.Pointer(&p)))
 }
 
