@@ -54,9 +54,9 @@ func msgIOC(n uint32) uintptr {
 
 type Device struct {
 	f           *os.File
-	mode        int
-	speedHz     int
-	bitsPerWord int
+	mode        uint8
+	speedHz     uint32
+	bitsPerWord uint8
 }
 
 type payload struct {
@@ -73,7 +73,7 @@ func (d *Device) SetMode(mode int) error {
 	if err := d.ioctl(wrIOC(), uintptr(unsafe.Pointer(&m))); err != nil {
 		return err
 	}
-	d.mode = mode
+	d.mode = m
 	return nil
 }
 
@@ -82,7 +82,7 @@ func (d *Device) SetSpeed(speedHz int) error {
 	if err := d.ioctl(speedHzIOC(), uintptr(unsafe.Pointer(&s))); err != nil {
 		return err
 	}
-	d.speedHz = speedHz
+	d.speedHz = s
 	return nil
 }
 
@@ -91,7 +91,7 @@ func (d *Device) SetBitsPerWord(bits int) error {
 	if err := d.ioctl(bitsPerWordIOC(), uintptr(unsafe.Pointer(&b))); err != nil {
 		return err
 	}
-	d.bitsPerWord = bits
+	d.bitsPerWord = b
 	return nil
 }
 
@@ -100,9 +100,9 @@ func (d *Device) Do(buf []byte, delay time.Duration) error {
 		tx:          uint64(uintptr(unsafe.Pointer(&buf[0]))),
 		rx:          uint64(uintptr(unsafe.Pointer(&buf[0]))),
 		length:      uint32(len(buf)),
-		speedHz:     uint32(d.speedHz),
+		speedHz:     d.speedHz,
 		delay:       uint16(delay),
-		bitsPerWord: uint8(d.bitsPerWord),
+		bitsPerWord: d.bitsPerWord,
 	}
 	// TODO(jbd): read from the buffer.
 	return d.ioctl(msgIOC(1), uintptr(unsafe.Pointer(&p)))
