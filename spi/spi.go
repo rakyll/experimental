@@ -16,40 +16,35 @@ const (
 const (
 	magic = 107
 
-	IOC_NRBITS   = 8
-	IOC_TYPEBITS = 8
-	IOC_SIZEBITS = 13 /* Actually 14, see below. */
-	IOC_DIRBITS  = 3
+	nrbits   = 8
+	typebits = 8
+	sizebits = 13 /* Actually 14, see below. */
+	dirbits  = 3
 
-	IOC_NRMASK   = (1 << IOC_NRBITS) - 1
-	IOC_TYPEMASK = (1 << IOC_TYPEBITS) - 1
-	IOC_SIZEMASK = (1 << IOC_SIZEBITS) - 1
-	IOC_DIRMASK  = (1 << IOC_DIRBITS) - 1
+	nrshift   = 0
+	typeshift = nrshift + nrbits
+	sizeshift = typeshift + typebits
+	dirshift  = sizeshift + sizebits
 
-	IOC_NRSHIFT   = 0
-	IOC_TYPESHIFT = IOC_NRSHIFT + IOC_NRBITS
-	IOC_SIZESHIFT = IOC_TYPESHIFT + IOC_TYPEBITS
-	IOC_DIRSHIFT  = IOC_SIZESHIFT + IOC_SIZEBITS
-
-	IOC_NONE  = 0
-	IOC_READ  = 2
-	IOC_WRITE = 4
+	none  = 0
+	read  = 2
+	write = 4
 )
 
 func ioc(dir, typ, nr, size uintptr) uintptr {
-	return (dir << IOC_DIRSHIFT) | (typ << IOC_TYPESHIFT) | (nr << IOC_NRSHIFT) | (size << IOC_SIZESHIFT)
+	return (dir << dirshift) | (typ << typeshift) | (nr << nrshift) | (size << sizeshift)
 }
 
 func wrIOC() uintptr {
-	return ioc(IOC_WRITE, magic, 1, 1)
+	return ioc(write, magic, 1, 1)
 }
 
 func bitsPerWordIOC() uintptr {
-	return ioc(IOC_WRITE, magic, 3, 1)
+	return ioc(write, magic, 3, 1)
 }
 
 func speedHzIOC() uintptr {
-	return ioc(IOC_WRITE, magic, 4, 4)
+	return ioc(write, magic, 4, 4)
 }
 
 func msgIOC(n uint32) uintptr {
