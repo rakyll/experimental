@@ -71,6 +71,9 @@ type payload struct {
 	bitsPerWord uint8
 }
 
+// SetMode sets the SPI mode. SPI mode is a combination of polarity and phases.
+// CPOL is the high order bit, CPHA is the low order. Pre-computed mode
+// values are Mode0, Mode1, Mode2 and Mode3.
 func (d *Device) SetMode(mode int) error {
 	m := uint8(mode)
 	if err := d.ioctl(ioc(write, magic, 1, 1), uintptr(unsafe.Pointer(&m))); err != nil {
@@ -80,6 +83,7 @@ func (d *Device) SetMode(mode int) error {
 	return nil
 }
 
+// SetSpeed sets the maximum clock speed in Hz.
 func (d *Device) SetSpeed(speedHz int) error {
 	s := uint32(speedHz)
 	if err := d.ioctl(ioc(write, magic, 4, 4), uintptr(unsafe.Pointer(&s))); err != nil {
@@ -89,6 +93,8 @@ func (d *Device) SetSpeed(speedHz int) error {
 	return nil
 }
 
+// SetBitsPerWord sets how many bits it takes to represent a word.
+// e.g. 8 represents 8-bit words.
 func (d *Device) SetBitsPerWord(bits int) error {
 	b := uint8(bits)
 	if err := d.ioctl(ioc(write, magic, 3, 1), uintptr(unsafe.Pointer(&b))); err != nil {
@@ -98,10 +104,13 @@ func (d *Device) SetBitsPerWord(bits int) error {
 	return nil
 }
 
+// Sync flushes any intermediate in-memory data to the SPI device.
 func (d *Device) Sync() error {
 	return d.f.Sync()
 }
 
+// Do does a duplex transmission to write to the SPI device and read
+// len(buf) numbers of bytes.
 func (d *Device) Do(buf []byte, delay time.Duration) error {
 	p := payload{
 		tx:          uint64(uintptr(unsafe.Pointer(&buf[0]))),
@@ -115,6 +124,7 @@ func (d *Device) Do(buf []byte, delay time.Duration) error {
 	return d.ioctl(msgArg(1), uintptr(unsafe.Pointer(&p)))
 }
 
+// Close closes the SPI device and releases related resources.
 func (d *Device) Close() error {
 	return d.f.Close()
 }
@@ -129,6 +139,9 @@ func (d *Device) ioctl(a1, a2 uintptr) error {
 	return nil
 }
 
+// Open opens an SPI device by the specified name.
+// The name must be the device name of the SPI bus,
+// e.g. /dev/spidev0.1.
 func Open(name string) (*Device, error) {
 	f, err := os.OpenFile(name, os.O_RDWR, 0)
 	if err != nil {
