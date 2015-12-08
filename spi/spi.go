@@ -51,19 +51,19 @@ func ioc(dir, typ, nr, size uintptr) uintptr {
 	return (dir << dirshift) | (typ << typeshift) | (nr << nrshift) | (size << sizeshift)
 }
 
-func wrIOC() uintptr {
+func modeArg() uintptr {
 	return ioc(write, magic, 1, 1)
 }
 
-func bitsPerWordIOC() uintptr {
+func bitsPerWordArg() uintptr {
 	return ioc(write, magic, 3, 1)
 }
 
-func speedHzIOC() uintptr {
+func speedHzArg() uintptr {
 	return ioc(write, magic, 4, 4)
 }
 
-func msgIOC(n uint32) uintptr {
+func msgArg(n uint32) uintptr {
 	return uintptr(0x40006B00 + (n * 0x200000))
 }
 
@@ -85,7 +85,7 @@ type payload struct {
 
 func (d *Device) SetMode(mode int) error {
 	m := uint8(mode)
-	if err := d.ioctl(wrIOC(), uintptr(unsafe.Pointer(&m))); err != nil {
+	if err := d.ioctl(modeArg(), uintptr(unsafe.Pointer(&m))); err != nil {
 		return err
 	}
 	d.mode = m
@@ -94,7 +94,7 @@ func (d *Device) SetMode(mode int) error {
 
 func (d *Device) SetSpeed(speedHz int) error {
 	s := uint32(speedHz)
-	if err := d.ioctl(speedHzIOC(), uintptr(unsafe.Pointer(&s))); err != nil {
+	if err := d.ioctl(speedHzArg(), uintptr(unsafe.Pointer(&s))); err != nil {
 		return err
 	}
 	d.speedHz = s
@@ -103,7 +103,7 @@ func (d *Device) SetSpeed(speedHz int) error {
 
 func (d *Device) SetBitsPerWord(bits int) error {
 	b := uint8(bits)
-	if err := d.ioctl(bitsPerWordIOC(), uintptr(unsafe.Pointer(&b))); err != nil {
+	if err := d.ioctl(bitsPerWordArg(), uintptr(unsafe.Pointer(&b))); err != nil {
 		return err
 	}
 	d.bitsPerWord = b
@@ -124,7 +124,7 @@ func (d *Device) Do(buf []byte, delay time.Duration) error {
 		bitsPerWord: d.bitsPerWord,
 	}
 	// TODO(jbd): read from the buffer.
-	return d.ioctl(msgIOC(1), uintptr(unsafe.Pointer(&p)))
+	return d.ioctl(msgArg(1), uintptr(unsafe.Pointer(&p)))
 }
 
 func (d *Device) Close() error {
