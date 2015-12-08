@@ -100,20 +100,17 @@ func (d *Device) SetBitsPerWord(bits int) error {
 	return nil
 }
 
-func (d *Device) Do(tx, rx []byte) error {
+func (d *Device) Do(buf []byte) error {
 	p := payload{
-		tx:          uint64(uintptr(unsafe.Pointer(&tx))),
-		rx:          uint64(uintptr(unsafe.Pointer(&rx))),
-		length:      uint32(len(tx)),
+		tx:          uint64(uintptr(unsafe.Pointer(&buf[0]))),
+		rx:          uint64(uintptr(unsafe.Pointer(&buf[0]))),
+		length:      uint32(len(buf)),
 		speedHz:     uint32(d.speedHz),
 		delay:       uint16(d.delay),
 		bitsPerWord: uint8(d.bitsPerWord),
 	}
-	if err := d.ioctl(msgIOC(), uintptr(unsafe.Pointer(&p))); err != nil {
-		return err
-	}
-	// TODO(jbd): Read into rx.
-	return nil
+	// TODO(jbd): read from the buffer.
+	return d.ioctl(msgIOC(1), uintptr(unsafe.Pointer(&p)))
 }
 
 func (d *Device) Close() error {
@@ -131,7 +128,7 @@ func (d *Device) ioctl(a1, a2 uintptr) error {
 }
 
 func Open(device string) (*Device, error) {
-	f, err := os.OpenFile(device, os.O_RDWR, 0)
+	f, err := os.OpenFile(device, os.O_RDWR, os.ModeExclusive)
 	if err != nil {
 		return nil, err
 	}
