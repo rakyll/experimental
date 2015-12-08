@@ -7,7 +7,12 @@ import (
 )
 
 const (
-	IOC_MAGIC = 107
+	Mode0 = 0x00
+	Mode1 = 0x04
+	Mode2 = 0x08
+	Mode3 = 0x0C
+)
+
 
 	IOC_NRBITS   = 8
 	IOC_TYPEBITS = 8
