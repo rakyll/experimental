@@ -110,6 +110,10 @@ func (d *Device) SetBitsPerWord(bits int) error {
 	return nil
 }
 
+func (d *Device) Sync() error {
+	return d.f.Sync()
+}
+
 func (d *Device) Do(buf []byte, delay time.Duration) error {
 	p := payload{
 		tx:          uint64(uintptr(unsafe.Pointer(&buf[0]))),
