@@ -117,7 +117,7 @@ func (d *Device) Do(buf []byte, delay time.Duration) error {
 		rx:          uint64(uintptr(unsafe.Pointer(&buf[0]))),
 		length:      uint32(len(buf)),
 		speedHz:     d.speedHz,
-		delay:       uint16(delay),
+		delay:       uint16(delay.Nanoseconds() / 1000),
 		bitsPerWord: d.bitsPerWord,
 	}
 	return d.ioctl(msgArg(1), uintptr(unsafe.Pointer(&p)))
