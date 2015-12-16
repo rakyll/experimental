@@ -51,14 +51,20 @@ type FrameInfo struct {
 	SampleRate int64
 }
 
-// Clip represents a linear PCM formatted audio io.ReadSeeker.
-// Clip can seek and read from a section and allow users to
+// Clip represents linear PCM formatted audio.
+// Clip can seek and read a small window of frames to allow users to
 // consume a small section of the underlying audio data.
+//
+// Frames return audio frames up to a number that can fit into the buf by
+// seeking to offset. n is the total number of returned frames. err is
+// io.EOF if there are no frames left to read.
+//
 // FrameInfo returns the basic frame-level information about the clip audio.
-// Size returns the total number of bytes from the underlying audio
-// data. If size is not known, -1 is returned.
+//
+// Size returns the total number of bytes of the underlying audio data.
+// TODO(jbd): Support cases where size is unknown?
 type Clip interface {
-	io.ReadSeeker
+	Frames(buf []byte, offset int64) (n int, err error)
 	FrameInfo() FrameInfo
 	Size() int64
 }
