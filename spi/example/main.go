@@ -32,35 +32,22 @@ func main() {
 	if err := d.SetMode(spi.Mode3); err != nil {
 		panic(err)
 	}
-	if err := d.SetSpeed(1000000); err != nil {
+	if err := d.SetSpeed(100000); err != nil {
 		panic(err)
 	}
 	if err := d.SetBitsPerWord(8); err != nil {
 		panic(err)
 	}
-	draw(d, 0.7)
-}
-
-// n is the number of LEDs in the strip.
-const n = 50
-
-func draw(dev *spi.Device, freq float64) {
-	payload := make([]byte, 4*n+2*n+1)
-	payload[0] = 0
-	payload[1] = 0
-	payload[2] = 0
-	payload[3] = 0
-
-	for i := 0; i < n; i++ {
-		payload[(i+1)*4] = 0xff   // alpha
-		payload[(i+1)*4+1] = 0xff // red
-		payload[(i+1)*4+2] = 0xff // green
-		payload[(i+1)*4+3] = 0xff // blue
-	}
-	for i := 0; i < 2*n; i++ {
-		payload[4*n+1+i] = 0xff
-	}
-	if err := dev.Do(payload, 0); err != nil {
+	if err := d.Do([]byte{
+		0, 0, 0, 0,
+		0xff, 0xee, 0xee, 0xff,
+		0xff, 0xee, 0xee, 0xff,
+		0xff, 0xee, 0xee, 0xff,
+		0xff, 0xee, 0xee, 0xff,
+		0xff, 0xff, 0xff, 0xff,
+		0xff, 0xff, 0xff, 0xff,
+		0xff, 0xff, 0xff, 0xff,
+	}, 0); err != nil {
 		panic(err)
 	}
 }
