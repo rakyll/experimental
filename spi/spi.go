@@ -112,10 +112,11 @@ func (d *Device) Sync() error {
 // Do does a duplex transmission to write to the SPI device and read
 // len(buf) numbers of bytes.
 func (d *Device) Do(buf []byte, delay time.Duration) error {
+	v := buf[:]
 	p := payload{
-		tx:          uint64(uintptr(unsafe.Pointer(&buf[0]))),
-		rx:          uint64(uintptr(unsafe.Pointer(&buf[0]))),
-		length:      uint32(len(buf)),
+		tx:          uint64(uintptr(unsafe.Pointer(&v[0]))),
+		rx:          uint64(uintptr(unsafe.Pointer(&v[0]))),
+		length:      uint32(len(v)),
 		speedHz:     d.speedHz,
 		delay:       uint16(delay.Nanoseconds() / 1000),
 		bitsPerWord: d.bitsPerWord,
