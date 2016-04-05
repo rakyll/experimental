@@ -9,5 +9,9 @@ type Device struct {
 }
 
 func Open(o driver.Opener, addr, bus int) (*Device, error) {
-	panic("not implemented yet")
+	conn, err := o.Open(addr, bus)
+	if err != nil {
+		return nil, err
+	}
+	return &Device{conn: conn}, nil
 }
