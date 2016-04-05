@@ -8,6 +8,18 @@ type Device struct {
 	conn driver.Conn
 }
 
+func (d *Device) Read(buf []byte) (int, error) {
+	return d.conn.Read(buf)
+}
+
+func (d *Device) Write(buf []byte) error {
+	return d.conn.Write(buf)
+}
+
+func (d *Device) Close() error {
+	return d.conn.Close()
+}
+
 func Open(o driver.Opener, addr, bus int) (*Device, error) {
 	conn, err := o.Open(addr, bus)
 	if err != nil {
