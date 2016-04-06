@@ -10,13 +10,17 @@ import (
 
 type DevFS struct{}
 
+const i2c_SLAVE = 0x0703 // TODO(jbd): Allow users to use I2C_SLAVE_FORCE?
+
+// TODO(jbd): Support I2C_RETRIES and I2C_TIMEOUT at the driver and implementation level.
+
 func (d *DevFS) Open(addr, bus int) (driver.Conn, error) {
 	f, err := os.OpenFile(fmt.Sprintf("/dev/i2c-%d", bus), os.O_RDWR, 0)
 	if err != nil {
 		return nil, err
 	}
 	conn := &devFSConn{f: f}
-	if err := conn.ioctl(0x0703, uintptr(addr)); err != nil {
+	if err := conn.ioctl(i2c_SLAVE, uintptr(addr)); err != nil {
 		conn.Close()
 		return nil, err
 	}
