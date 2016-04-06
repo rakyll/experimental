@@ -21,9 +21,6 @@ func (d *Device) Close() error {
 }
 
 func Open(o driver.Opener, addr uint8, bus int) (*Device, error) {
-	if o == nil {
-		o = &DevFS{}
-	}
 	conn, err := o.Open(addr, bus)
 	if err != nil {
 		return nil, err
