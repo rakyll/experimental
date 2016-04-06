@@ -10,7 +10,7 @@ import (
 
 type DevFS struct{}
 
-func (d *DevFS) Open(addr uint8, bus int) (driver.Conn, error) {
+func (d *DevFS) Open(addr, bus int) (driver.Conn, error) {
 	f, err := os.OpenFile(fmt.Sprintf("/dev/i2c-%d", bus), os.O_RDWR, 0)
 	if err != nil {
 		return nil, err

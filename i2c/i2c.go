@@ -20,7 +20,8 @@ func (d *Device) Close() error {
 	return d.conn.Close()
 }
 
-func Open(o driver.Opener, addr uint8, bus int) (*Device, error) {
+// Open opens an I2C device with the given I2C address and adapter number.
+func Open(o driver.Opener, addr, adapter int) (*Device, error) {
 	conn, err := o.Open(addr, bus)
 	if err != nil {
 		return nil, err

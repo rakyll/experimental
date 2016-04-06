@@ -8,7 +8,7 @@ package driver
 // Opener is an interface to be implemented by the I2C driver to open
 // a connection an I2C device with the specified addr and bus number.
 type Opener interface {
-	Open(addr uint8, bus int) (Conn, error)
+	Open(addr, bus int) (Conn, error)
 }
 
 // Conn represents an active connection to an I2C device.
