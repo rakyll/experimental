@@ -58,15 +58,21 @@ func (d *Device) SetVal(pin int, v Value) error {
 }
 
 func (d *Device) SetActiveType(pin int, t ActiveType) error {
-	return d.conn.SetActiveType(pin, string(t))
+	return d.conn.Configure(pin, driver.PinOptions{
+		ActiveType: string(t),
+	})
 }
 
 func (d *Device) SetDirection(pin int, dir Direction) error {
-	return d.conn.SetDirection(pin, string(dir))
+	return d.conn.Configure(pin, driver.PinOptions{
+		Direction: string(dir),
+	})
 }
 
 func (d *Device) SetEdgeTriggerType(pin int, t EdgeTriggerType) error {
-	return d.conn.SetEdgeTriggerType(pin, string(t))
+	return d.conn.Configure(pin, driver.PinOptions{
+		EdgeTriggerType: string(t),
+	})
 }
 
 // TODO(jbd): Allow polling.
