@@ -45,16 +45,16 @@ func Open(d driver.Opener) (*Device, error) {
 	return &Device{conn: conn}, nil
 }
 
-func (d *Device) Read(pin int) (Value, error) {
-	v, err := d.conn.Value(pin)
+func (d *Device) Val(pin int) (Value, error) {
+	v, err := d.conn.Val(pin)
 	if err != nil {
 		return Value(0), err
 	}
 	return Value(v), nil
 }
 
-func (d *Device) Write(pin int, v Value) error {
-	return d.conn.SetValue(pin, int(v))
+func (d *Device) SetVal(pin int, v Value) error {
+	return d.conn.SetVal(pin, int(v))
 }
 
 func (d *Device) SetActiveType(pin int, t ActiveType) error {

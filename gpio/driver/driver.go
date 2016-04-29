@@ -5,8 +5,8 @@ type Opener interface {
 }
 
 type Conn interface {
-	Value(pin int) (int, error)
-	SetValue(pin int, v int) error
+	Val(pin int) (int, error)
+	SetVal(pin int, v int) error
 	SetActiveType(pin int, t string) error
 	SetDirection(pin int, t string) error
 	SetEdgeTriggerType(pin int, t string) error
