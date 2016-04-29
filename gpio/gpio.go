@@ -75,6 +75,7 @@ func (d *Device) SetEdgeTriggerType(pin int, t EdgeTriggerType) error {
 	})
 }
 
+// TODO(jbd): Allow users to open/close each pin as a device?
 // TODO(jbd): Allow polling.
 
 func (d *Device) Close() error {
