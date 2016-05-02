@@ -11,8 +11,8 @@ type Opener interface {
 }
 
 type Conn interface {
-	Val(pin int) (int, error)
-	SetVal(pin int, v int) error
 	Configure(pin int, opt PinOptions) error
+	Value(pin int) (int, error)
+	SetValue(pin int, v int) error
 	Close() error
 }

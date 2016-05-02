@@ -6,19 +6,12 @@ type Device struct {
 	conn driver.Conn
 }
 
-type Value int
-
-const (
-	Low  = Value(0)
-	High = Value(1)
-)
-
 type Direction string
 
 const (
-	In               = Direction("in")
-	OutInitiallyLow  = Direction("out_low")
-	OutInitiallyHigh = Direction("out_high")
+	In  = Direction("in")
+	Out = Direction("out")
+	// TODO(jbd): Out but initially high or initially low?
 )
 
 type EdgeTriggerType string
@@ -45,22 +38,16 @@ func Open(d driver.Opener) (*Device, error) {
 	return &Device{conn: conn}, nil
 }
 
-func (d *Device) Val(pin int) (Value, error) {
-	v, err := d.conn.Val(pin)
-	if err != nil {
-		return Value(0), err
-	}
-	return Value(v), nil
-}
-
-func (d *Device) SetVal(pin int, v Value) error {
-	return d.conn.SetVal(pin, int(v))
+func (d *Device) Value(pin int) (int, error) {
+	return d.conn.Value(pin)
 }
 
 func (d *Device) SetActiveType(pin int, t ActiveType) error {
 	return d.conn.Configure(pin, driver.PinOptions{
 		ActiveType: string(t),
 	})
+func (d *Device) SetValue(pin int, v int) error {
+	return d.conn.SetValue(pin, int(v))
 }
 
 func (d *Device) SetDirection(pin int, dir Direction) error {
