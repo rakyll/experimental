@@ -31,6 +31,8 @@ const (
 )
 
 func Open(d driver.Opener) (*Device, error) {
+	// TODO(jbd): Open pin rather than GPIO device? It would help
+	// some driver implementations such as sysfs.
 	conn, err := d.Open()
 	if err != nil {
 		return nil, err
@@ -54,7 +56,6 @@ func (d *Device) Configure(pin int, dir Direction, a ActiveType, e EdgeTriggerTy
 	return d.conn.Configure(pin, string(dir), string(a), string(e))
 }
 
-// TODO(jbd): Allow users to open/close each pin as a device?
 // TODO(jbd): Allow polling the value of a pin.
 
 func (d *Device) Close() error {
