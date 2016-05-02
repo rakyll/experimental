@@ -42,24 +42,16 @@ func (d *Device) Value(pin int) (int, error) {
 	return d.conn.Value(pin)
 }
 
-func (d *Device) SetActiveType(pin int, t ActiveType) error {
-	return d.conn.Configure(pin, driver.PinOptions{
-		ActiveType: string(t),
-	})
 func (d *Device) SetValue(pin int, v int) error {
 	return d.conn.SetValue(pin, int(v))
 }
 
 func (d *Device) SetDirection(pin int, dir Direction) error {
-	return d.conn.Configure(pin, driver.PinOptions{
-		Direction: string(dir),
-	})
+	return d.conn.Configure(pin, string(dir), "", "")
 }
 
-func (d *Device) SetEdgeTriggerType(pin int, t EdgeTriggerType) error {
-	return d.conn.Configure(pin, driver.PinOptions{
-		EdgeTriggerType: string(t),
-	})
+func (d *Device) Configure(pin int, dir Direction, a ActiveType, e EdgeTriggerType) error {
+	return d.conn.Configure(pin, string(dir), string(a), string(e))
 }
 
 // TODO(jbd): Allow users to open/close each pin as a device?
