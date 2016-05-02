@@ -40,6 +40,12 @@ func Open(d driver.Opener) (*Device, error) {
 	return &Device{conn: conn}, nil
 }
 
+// Default tries to open a GPIO device with the default devfs driver.
+// If a specific driver is required to open the device, use Open function.
+func Default() (*Device, error) {
+	panic("not yet implemented")
+}
+
 func (d *Device) Value(pin int) (int, error) {
 	return d.conn.Value(pin)
 }
