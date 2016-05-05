@@ -51,11 +51,11 @@ func (d *Device) SetValue(pin int, v int) error {
 }
 
 func (d *Device) SetDirection(pin int, dir Direction) error {
-	return d.conn.Configure(pin, string(dir), "", "")
+	return d.conn.SetDirection(pin, string(dir))
 }
 
-func (d *Device) Configure(pin int, dir Direction, a ActiveType, e EdgeTriggerType) error {
-	return d.conn.Configure(pin, string(dir), string(a), string(e))
+func (d *Device) SetActiveLow(pin int, low bool) error {
+	return d.conn.SetActiveLow(pin, low)
 }
 
 func (d *Device) Close() error {

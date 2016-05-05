@@ -23,7 +23,11 @@ func (d *devfsConn) SetValue(pin int, v int) error {
 	panic("not implemented")
 }
 
-func (d *devfsConn) Configure(pin int, direction, active, edgeTrigger string) error {
+func (d *devfsConn) SetDirection(pin int, dir string) error {
+	panic("not implemented")
+}
+
+func (d *devfsConn) SetActiveLow(pin int, low bool) error {
 	panic("not implemented")
 }
 

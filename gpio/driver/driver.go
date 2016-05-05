@@ -7,6 +7,7 @@ type Opener interface {
 type Conn interface {
 	Value(pin int) (int, error)
 	SetValue(pin int, v int) error
-	Configure(pin int, direction, active, edgeTrigger string) error
+	SetDirection(pin int, dir string) error
+	SetActiveLow(pin int, low bool) error
 	Close() error
 }
