@@ -16,21 +16,7 @@ const (
 
 // TODO(jbd): How to support analog pins?
 
-type EdgeTriggerType string
-
-const (
-	None    = EdgeTriggerType("none")
-	Rising  = EdgeTriggerType("rising")
-	Falling = EdgeTriggerType("falling")
-	Both    = EdgeTriggerType("both")
-)
-
-type ActiveType string
-
-const (
-	ActiveLow  = ActiveType("active_low")
-	ActiveHigh = ActiveType("active_high")
-)
+// TODO(jbd): Allow users to configure edge trigger type.
 
 func Open(d driver.Opener) (*Device, error) {
 	// TODO(jbd): Open pin rather than GPIO device? It would help
