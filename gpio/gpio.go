@@ -14,6 +14,8 @@ const (
 	// TODO(jbd): Out but initially high or initially low?
 )
 
+// TODO(jbd): How to support analog pins?
+
 type EdgeTriggerType string
 
 const (
