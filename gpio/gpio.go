@@ -18,9 +18,15 @@ const (
 
 // TODO(jbd): Allow users to configure edge trigger type.
 
+// Open opens a connection to the GPIO device with the given driver.
+// If a nil driver is provided, it uses the Devfs implementation with
+// the default settings.
 func Open(d driver.Opener) (*Device, error) {
 	// TODO(jbd): Open pin rather than GPIO device? It would help
 	// some driver implementations such as sysfs.
+	if d == nil {
+		d = &Devfs{}
+	}
 	conn, err := d.Open()
 	if err != nil {
 		return nil, err
