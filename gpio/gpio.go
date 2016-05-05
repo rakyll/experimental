@@ -1,3 +1,4 @@
+// Package gpio allows users to communicate with GPIO pins.
 package gpio
 
 import "github.com/rakyll/experimental/gpio/driver"
@@ -6,6 +7,8 @@ type Device struct {
 	conn driver.Conn
 }
 
+// Direction determines the direction of the pin. A pin could be
+// configured to be an input or an output.
 type Direction string
 
 const (
