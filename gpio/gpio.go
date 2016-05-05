@@ -65,7 +65,6 @@ func (d *Device) Configure(pin int, dir Direction, a ActiveType, e EdgeTriggerTy
 }
 
 // TODO(jbd): Allow polling the value of a pin.
-// TODO(jbd): Add abstractions for pin mapping.
 
 func (d *Device) Close() error {
 	return d.conn.Close()
